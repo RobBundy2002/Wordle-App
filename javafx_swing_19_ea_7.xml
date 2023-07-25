@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="javafx-swing-19-ea+7">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="jar://$USER_HOME$/AppData/Local/Temp/javafx-swing-19-ea+7.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Temp/javafx-base-19-ea+7.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Temp/javafx-graphics-19-ea+7.jar!/" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>

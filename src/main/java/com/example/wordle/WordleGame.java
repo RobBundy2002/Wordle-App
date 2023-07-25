@@ -70,8 +70,8 @@ public class WordleGame extends Application {
         // Create gamePane first
         Image image = new Image("1234.jpg");
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(100);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(150);
 
         VBox gamePane = new VBox(imageView, createGameLayout());
         gamePane.setAlignment(Pos.CENTER);
@@ -93,8 +93,6 @@ public class WordleGame extends Application {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setVgap(10);
-
-        // ... (previous code)
 
         letterTexts = new Text[secretWord.length()];
         for (int i = 0; i < secretWord.length(); i++) {
