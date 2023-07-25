@@ -58,7 +58,9 @@ public class WordleGame extends Application {
         mainBox.setSpacing(10);
 
         // Set the background color of mainBox to orange
-        mainBox.setStyle("-fx-background-color: orange;");
+        mainBox.setStyle("-fx-background-color: rgb(255,255,255);");
+
+
 
         Scene scene = new Scene(mainBox, 400, 500);
         primaryStage.setTitle("Wordle Game");
@@ -84,14 +86,14 @@ public class WordleGame extends Application {
 
         guessTextField = new TextField();
         guessTextField.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 18));
-        guessTextField.setStyle("-fx-background-color: lightyellow; -fx-text-fill: black;");
+        guessTextField.setStyle("-fx-background-color: red; -fx-text-fill: white;");
         guessTextField.setOnAction(e -> checkGuess());
         gridPane.add(guessTextField, 0, 1, 3, 1);
 
         Button revealButton = new Button("What's the Answer?");
         revealButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
         revealButton.setTextFill(Color.WHITE);
-        revealButton.setStyle("-fx-background-color: navy; -fx-padding: 8px 12px;");
+        revealButton.setStyle("-fx-background-color: blue; -fx-padding: 8px 12px;");
         revealButton.setOnAction(e -> revealAnswer());
         gridPane.add(revealButton, 0, 2, 3, 1);
 
@@ -216,9 +218,9 @@ public class WordleGame extends Application {
 
         int row = boardHeight - remainingAttempts - 1; // Calculate the row to place the guessed letter
         if (secretWord.charAt(i) == guessedLetter) {
-            boardSquares[i][row].setFill(Color.GREEN);
+            boardSquares[i][row].setFill(Color.RED);
         } else if (secretWord.contains(Character.toString(guessedLetter))) {
-            boardSquares[i][row].setFill(Color.YELLOWGREEN);
+            boardSquares[i][row].setFill(Color.BLUE);
         } else {
             boardSquares[i][row].setFill(Color.BLACK);
         }
@@ -281,11 +283,11 @@ public class WordleGame extends Application {
     private StackPane createWordleText() {
         Text wordleText = new Text("WORDLE");
         wordleText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 40));
-        wordleText.setFill(Color.NAVY);
+        wordleText.setFill(Color.RED);
 
         Text authorText = new Text("By Rob Bundy");
         authorText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 12));
-        authorText.setFill(Color.NAVY);
+        authorText.setFill(Color.RED);
         authorText.setTranslateY(10);
 
         StackPane wordlePane = new StackPane(wordleText, authorText);
