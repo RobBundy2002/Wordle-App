@@ -48,12 +48,7 @@ public class WordleGame extends Application {
         previousGuessesBox.setAlignment(Pos.CENTER);
 
         // Create gamePane first
-        Image image = new Image("1234.jpg");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(400);
-        imageView.setFitHeight(150);
-
-        VBox gamePane = new VBox(imageView, createGameLayout());
+        VBox gamePane = new VBox(createWordleText(), createGameLayout()); // Add the Text element with "WORDLE" to the top
         gamePane.setAlignment(Pos.CENTER);
         gamePane.setSpacing(10);
 
@@ -260,8 +255,8 @@ public class WordleGame extends Application {
         // Reset the board to its original state and remove guessed letters
         for (int row = 0; row < boardHeight; row++) {
             for (int col = 0; col < boardWidth; col++) {
-                boardSquares[col][row].setFill(Color.WHITE);
-                guessedLetterTexts[col][row].setText(""); // Clear the guessed letter from the Text node
+                guessedLetterTexts[col][row].setText("");
+                boardSquares[col][row].setFill(Color.WHITE);   // Clear the guessed letter from the Text node
             }
         }
     }
@@ -271,6 +266,12 @@ public class WordleGame extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    private Text createWordleText() {
+        Text wordleText = new Text("WORDLE");
+        wordleText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 40));
+        wordleText.setFill(Color.BLACK);
+        return wordleText;
     }
     public static void main(String[] args) {
         launch(args);
