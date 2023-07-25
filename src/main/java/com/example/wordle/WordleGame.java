@@ -83,12 +83,15 @@ public class WordleGame extends Application {
         }
 
         guessTextField = new TextField();
-        guessTextField.setFont(Font.font("Comic Sans MS",FontWeight.BOLD,18));
+        guessTextField.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 18));
         guessTextField.setStyle("-fx-background-color: lightyellow; -fx-text-fill: black;");
         guessTextField.setOnAction(e -> checkGuess());
         gridPane.add(guessTextField, 0, 1, 3, 1);
 
         Button revealButton = new Button("What's the Answer?");
+        revealButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
+        revealButton.setTextFill(Color.WHITE);
+        revealButton.setStyle("-fx-background-color: navy; -fx-padding: 8px 12px;");
         revealButton.setOnAction(e -> revealAnswer());
         gridPane.add(revealButton, 0, 2, 3, 1);
 
