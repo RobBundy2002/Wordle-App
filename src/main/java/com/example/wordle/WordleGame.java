@@ -1,59 +1,39 @@
 package com.example.wordle;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
-
+import java.nio.file.*;
+import javafx.scene.image.*;
+import java.util.*;
+import javafx.geometry.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
+
 public class WordleGame extends Application {
     private Text[][] guessedLetterTexts;
     private static final String dictionaryFilePath = "dictionary2.txt";
-
     private static final int maxAttempts = 6;
     private static final int boardWidth = 5;
     private static final int boardHeight = 6;
-
     private String guessedWord;
     private String secretWord;
     private int remainingAttempts;
     private VBox previousGuessesBox;
     private GridPane boardPane;
     private Rectangle[][] boardSquares;
-
     private Text[] letterTexts;
     private TextField guessTextField;
 
-    private Set<Character> usedLetters;
     private void revealAnswer() {
         showAlert("The correct word is: " + secretWord);
         resetGame();
     }
-
     @Override
-
     public void start(Stage primaryStage) {
         try {
             secretWord = generateRandomWord();
@@ -87,8 +67,6 @@ public class WordleGame extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
     private GridPane createGameLayout() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -138,16 +116,11 @@ public class WordleGame extends Application {
 
         return gridPane;
     }
-
-
-
     private String generateRandomWord() throws IOException {
         List<String> dictionaryWords = Files.readAllLines(Paths.get(dictionaryFilePath));
         int index = new Random().nextInt(dictionaryWords.size());
         return dictionaryWords.get(index).toUpperCase();
     }
-
-
     private GridPane createBoardLayout() {
         GridPane boardPane = new GridPane();
         boardPane.setAlignment(Pos.CENTER);
@@ -174,10 +147,8 @@ public class WordleGame extends Application {
                 boardPane.add(guessedLetterText, col, row);
             }
         }
-
         return boardPane;
     }
-
     private void checkGuess() {
         String guess = guessTextField.getText().toUpperCase();
         guessTextField.clear();
@@ -222,33 +193,28 @@ public class WordleGame extends Application {
                 letterTexts[i].setFill(Color.BLACK);
             }
 
-            //   letterTexts[i].setText(Character.toString(guessedLetter)); // Set the guessed letter in the text array
-
-            int col = i;
             int row = boardHeight - remainingAttempts - 1; // Calculate the row to place the guessed letter
             Text guessedLetterText = new Text(Character.toString(guessedLetter));
             guessedLetterText.setFont(Font.font(24)); // Set the font size
             guessedLetterText.setFill(Color.WHITE); // Set the text color
             GridPane.setHalignment(guessedLetterText, HPos.CENTER); // Center the text horizontally
             GridPane.setValignment(guessedLetterText, VPos.CENTER); // Center the text vertically
-            boardPane.add(guessedLetterText, col, row);
+            boardPane.add(guessedLetterText, i, row);
         }
 
         guessedWord = sb.toString();
 
-        Text previousGuessText = new Text(guessedWord);
-
         // Update the board with the guessed letters
         for (int i = 0; i < secretWord.length(); i++) {
             char guessedLetter = guess.charAt(i);
-            int col = i;
+
             int row = boardHeight - remainingAttempts - 1; // Calculate the row to place the guessed letter
             if (secretWord.charAt(i) == guessedLetter) {
-                boardSquares[col][row].setFill(Color.GREEN);
+                boardSquares[i][row].setFill(Color.GREEN);
             } else if (secretWord.contains(Character.toString(guessedLetter))) {
-                boardSquares[col][row].setFill(Color.YELLOWGREEN);
+                boardSquares[i][row].setFill(Color.YELLOWGREEN);
             } else {
-                boardSquares[col][row].setFill(Color.BLACK);
+                boardSquares[i][row].setFill(Color.BLACK);
             }
         }
 
@@ -257,8 +223,6 @@ public class WordleGame extends Application {
             resetGame();
         }
     }
-
-
 
   /*  private void onKeyboardButtonClick(Button button) {
         String letter = button.getText();
@@ -275,7 +239,6 @@ public class WordleGame extends Application {
             guessTextField.appendText(letter); // Append the clicked letter to the guessTextField
         }
     } */
-
     private void resetGame() {
         try {
             secretWord = generateRandomWord();
@@ -302,7 +265,6 @@ public class WordleGame extends Application {
             }
         }
     }
-
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Wordle Game");
@@ -310,7 +272,6 @@ public class WordleGame extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     public static void main(String[] args) {
         launch(args);
     }
