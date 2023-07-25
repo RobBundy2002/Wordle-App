@@ -57,6 +57,9 @@ public class WordleGame extends Application {
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setSpacing(10);
 
+        // Set the background color of mainBox to orange
+        mainBox.setStyle("-fx-background-color: orange;");
+
         Scene scene = new Scene(mainBox, 400, 500);
         primaryStage.setTitle("Wordle Game");
         primaryStage.setScene(scene);
@@ -80,6 +83,8 @@ public class WordleGame extends Application {
         }
 
         guessTextField = new TextField();
+        guessTextField.setFont(Font.font("Comic Sans MS",FontWeight.BOLD,18));
+        guessTextField.setStyle("-fx-background-color: lightyellow; -fx-text-fill: black;");
         guessTextField.setOnAction(e -> checkGuess());
         gridPane.add(guessTextField, 0, 1, 3, 1);
 
@@ -145,7 +150,10 @@ public class WordleGame extends Application {
         return boardPane;
     }
     private void checkGuess() {
+
         String guess = guessTextField.getText().toUpperCase();
+        guessTextField.setText(guess); // Update the guessTextField to display the uppercase text
+
         guessTextField.clear();
 
         if (guess.length() != secretWord.length()) {
@@ -267,11 +275,21 @@ public class WordleGame extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    private Text createWordleText() {
+    private StackPane createWordleText() {
         Text wordleText = new Text("WORDLE");
         wordleText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 40));
-        wordleText.setFill(Color.BLACK);
-        return wordleText;
+        wordleText.setFill(Color.NAVY);
+
+        Text authorText = new Text("By Rob Bundy");
+        authorText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 12));
+        authorText.setFill(Color.NAVY);
+        authorText.setTranslateY(10);
+
+        StackPane wordlePane = new StackPane(wordleText, authorText);
+        StackPane.setAlignment(wordleText, Pos.CENTER);
+        StackPane.setAlignment(authorText, Pos.BOTTOM_CENTER);
+
+        return wordlePane;
     }
     public static void main(String[] args) {
         launch(args);
