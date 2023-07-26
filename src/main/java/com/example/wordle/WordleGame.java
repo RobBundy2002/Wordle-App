@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.*;
 
 import javafx.animation.TranslateTransition;
+import javafx.scene.Node;
 import javafx.scene.image.*;
 import java.util.*;
 import javafx.geometry.*;
@@ -24,13 +25,16 @@ public class WordleGame extends Application {
     private static final int boardWidth = 5;
     private static final int boardHeight = 6;
     private String guessedWord;
+    private Set<Character> usedLetters = new HashSet<>();
     private String secretWord;
     private int remainingAttempts;
     private VBox previousGuessesBox;
     private GridPane boardPane;
+    private GridPane keyboardPane;
     private Rectangle[][] boardSquares;
     private Text[] letterTexts;
     private TextField guessTextField;
+
 
     private void revealAnswer() {
         showAlert("The correct word is: " + secretWord);
@@ -63,8 +67,6 @@ public class WordleGame extends Application {
         // Set the background color of mainBox to orange
         mainBox.setStyle("-fx-background-color: rgb(255,255,255);");
 
-
-
         Scene scene = new Scene(mainBox, 600, 700);
         primaryStage.setTitle("Wordle Game");
         primaryStage.setScene(scene);
@@ -74,22 +76,47 @@ public class WordleGame extends Application {
         moveUpTransition.setToY(-100); // Adjust the value to control how much the screen moves up
         moveUpTransition.play();
     }
-    private GridPane createGameLayout() {
+    private GridPane createKeyboardLayout() {
+        GridPane keyboardPane = new GridPane();
+        keyboardPane.setAlignment(Pos.CENTER);
+        keyboardPane.setHgap(5);
+        keyboardPane.setVgap(5);
+
+        // Define the keyboard layout with 9 columns and 3 rows
+        String[][] keyboardLayout = {
+                {"Q", "W", "E", "R", "T", "Y", "U", "I", "O"},
+                {"A", "S", "D", "F", "G", "H", "J", "K", "L"},
+                {"Z", "X", "C", "V", "B", "N", "M", "-", "+"}
+        };
+
+        for (int row = 0; row < keyboardLayout.length; row++) {
+            for (int col = 0; col < keyboardLayout[row].length; col++) {
+                String letter = keyboardLayout[row][col];
+                Button button = new Button(letter);
+                button.setFont(Font.font(18));
+                button.setOnAction(e -> onKeyboardButtonClick(button));
+                keyboardPane.add(button, col, row);
+            }
+        }
+
+        return keyboardPane;
+    }
+    private VBox createGameLayout() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setVgap(10);
 
         letterTexts = new Text[secretWord.length()];
         for (int i = 0; i < secretWord.length(); i++) {
-        Text letterText = new Text();
-        letterText.setFont(Font.font(20));
-        letterText.setFill(Color.BLACK);
-        letterText.setStyle("-fx-border-color: black");
-        letterText.setUnderline(true);
-        letterTexts[i] = letterText;
+            Text letterText = new Text();
+            letterText.setFont(Font.font(20));
+            letterText.setFill(Color.BLACK);
+            letterText.setStyle("-fx-border-color: black");
+            letterText.setUnderline(true);
+            letterTexts[i] = letterText;
 
-        gridPane.add(letterText, i, 0);
-    }
+            gridPane.add(letterText, i, 0);
+        }
 
         guessTextField = new TextField();
         guessTextField.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 18));
@@ -126,7 +153,15 @@ public class WordleGame extends Application {
         gridPane.getColumnConstraints().addAll(col1, col2, col3);
         gridPane.getRowConstraints().addAll(row1, row2, row3);
 
-        return gridPane;
+        // Create the keyboard layout
+        GridPane keyboardPane = createKeyboardLayout();
+
+        VBox gameLayout = new VBox(createWordleText(), gridPane, keyboardPane); // Combine game elements
+        gameLayout.setAlignment(Pos.CENTER);
+        gameLayout.setSpacing(10);
+        gameLayout.setPadding(new Insets(10));
+
+        return gameLayout;
     }
     private String generateRandomWord() throws IOException {
         List<String> dictionaryWords = Files.readAllLines(Paths.get(dictionaryFilePath));
@@ -239,7 +274,7 @@ public class WordleGame extends Application {
         }
     }
 
-    /*  private void onKeyboardButtonClick(Button button) {
+       private void onKeyboardButtonClick(Button button) {
           String letter = button.getText();
           if (!usedLetters.contains(letter.charAt(0))) {
               usedLetters.add(letter.charAt(0));
@@ -253,7 +288,7 @@ public class WordleGame extends Application {
               }
               guessTextField.appendText(letter); // Append the clicked letter to the guessTextField
           }
-      } */
+      }
     private void resetGame() {
         try {
             secretWord = generateRandomWord();
@@ -303,6 +338,7 @@ public class WordleGame extends Application {
 
         return wordlePane;
     }
+
     public static void main(String[] args) {
         launch(args);
     }
