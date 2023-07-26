@@ -1,6 +1,8 @@
 package com.example.wordle;
 import java.io.IOException;
 import java.nio.file.*;
+
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.*;
 import java.util.*;
 import javafx.geometry.*;
@@ -13,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class WordleGame extends Application {
     private Text[][] guessedLetterTexts;
@@ -62,10 +65,14 @@ public class WordleGame extends Application {
 
 
 
-        Scene scene = new Scene(mainBox, 400, 500);
+        Scene scene = new Scene(mainBox, 600, 700);
         primaryStage.setTitle("Wordle Game");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        TranslateTransition moveUpTransition = new TranslateTransition(Duration.millis(1), mainBox);
+        moveUpTransition.setToY(-100); // Adjust the value to control how much the screen moves up
+        moveUpTransition.play();
     }
     private GridPane createGameLayout() {
         GridPane gridPane = new GridPane();
