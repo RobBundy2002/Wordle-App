@@ -15,7 +15,7 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-@SuppressWarnings("ALL")
+
 public class WordleGame extends Application {
     private Text[][] guessedLetterTexts;
     private static final String dictionaryFilePath = "dictionary2.txt";
@@ -23,7 +23,7 @@ public class WordleGame extends Application {
     private static final int boardWidth = 5;
     private static final int boardHeight = 6;
     private String guessedWord;
-    private Set<Character> usedLetters = new HashSet<>();
+    private final Set<Character> usedLetters = new HashSet<>();
     private String secretWord;
     private int remainingAttempts;
     private VBox previousGuessesBox;
