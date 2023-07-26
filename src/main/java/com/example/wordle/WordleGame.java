@@ -1,10 +1,7 @@
 package com.example.wordle;
 import java.io.IOException;
 import java.nio.file.*;
-
 import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
-import javafx.scene.image.*;
 import java.util.*;
 import javafx.geometry.*;
 import javafx.application.Application;
@@ -18,6 +15,7 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+@SuppressWarnings("ALL")
 public class WordleGame extends Application {
     private Text[][] guessedLetterTexts;
     private static final String dictionaryFilePath = "dictionary2.txt";
@@ -30,7 +28,6 @@ public class WordleGame extends Application {
     private int remainingAttempts;
     private VBox previousGuessesBox;
     private GridPane boardPane;
-    private GridPane keyboardPane;
     private Rectangle[][] boardSquares;
     private Text[] letterTexts;
     private TextField guessTextField;
@@ -94,6 +91,7 @@ public class WordleGame extends Application {
                 String letter = keyboardLayout[row][col];
                 Button button = new Button(letter);
                 button.setFont(Font.font(18));
+                button.setStyle("-fx-background-color: red; -fx-text-fill: white;");
                 button.setOnAction(e -> onKeyboardButtonClick(button));
                 keyboardPane.add(button, col, row);
             }
