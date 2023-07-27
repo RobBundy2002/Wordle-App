@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import javafx.animation.TranslateTransition;
 import java.util.*;
+import javafx.scene.layout.StackPane;
 import javafx.geometry.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -10,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -32,7 +35,6 @@ public class WordleGame extends Application {
     private Text[] letterTexts;
     private TextField guessTextField;
 
-
     private void revealAnswer() {
         showAlert("The correct word is: " + secretWord);
         resetGame();
@@ -46,6 +48,8 @@ public class WordleGame extends Application {
             showAlert("Error generating a random word from the dictionary.");
             return;
         }
+
+
 
         remainingAttempts = maxAttempts;
         previousGuessesBox = new VBox();
@@ -61,10 +65,14 @@ public class WordleGame extends Application {
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setSpacing(10);
 
-        // Set the background color of mainBox to orange
-        mainBox.setStyle("-fx-background-color: rgb(255,255,255);");
+        FancySpaceBackground backgroundPane = new FancySpaceBackground();
 
-        Scene scene = new Scene(mainBox, 600, 700);
+        // Set the background of the root StackPane to the custom background
+        StackPane root = new StackPane(backgroundPane, mainBox);
+
+       Scene scene = new Scene(root, 600, 700);
+
+
         primaryStage.setTitle("Wordle Game");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -73,6 +81,41 @@ public class WordleGame extends Application {
         moveUpTransition.setToY(-100); // Adjust the value to control how much the screen moves up
         moveUpTransition.play();
     }
+    private static class FancySpaceBackground extends Region {
+        private static final Color BACKGROUND_COLOR = Color.BLACK;
+        FancySpaceBackground() {
+            Rectangle background = new Rectangle();
+            background.widthProperty().bind(widthProperty());
+            background.heightProperty().bind(heightProperty());
+            background.setFill(BACKGROUND_COLOR);
+            getChildren().add(background);
+
+            // Set the background color to black
+            this.setStyle("-fx-background-color: black;");
+
+            // Add circles to represent stars
+            for (int i = 0; i < 200; i++) {
+                Circle star = new Circle(1, Color.WHITE);
+                double x = Math.random() * 600; // Random x-coordinate within the scene width
+                double y = Math.random() * 700; // Random y-coordinate within the scene height
+                star.setTranslateX(x);
+                star.setTranslateY(y);
+                this.getChildren().add(star);
+            }
+
+            // Add polygons to represent distant galaxies or nebulae
+            for (int i = 0; i < 30; i++) {
+                Polygon galaxy = new Polygon(
+                        Math.random() * 600, Math.random() * 700,
+                        Math.random() * 600, Math.random() * 700,
+                        Math.random() * 600, Math.random() * 700
+                );
+                galaxy.setFill(Color.rgb(200, 200, 255, 0.2)); // Light blue with transparency
+                this.getChildren().add(galaxy);
+            }
+        }
+    }
+
     private GridPane createKeyboardLayout() {
         GridPane keyboardPane = new GridPane();
         keyboardPane.setAlignment(Pos.CENTER);
@@ -91,7 +134,7 @@ public class WordleGame extends Application {
                 String letter = keyboardLayout[row][col];
                 Button button = new Button(letter);
                 button.setFont(Font.font(18));
-                button.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                button.setStyle("-fx-background-color: white; -fx-text-fill: black;");
                 button.setOnAction(e -> onKeyboardButtonClick(button));
                 keyboardPane.add(button, col, row);
             }
@@ -118,14 +161,14 @@ public class WordleGame extends Application {
 
         guessTextField = new TextField();
         guessTextField.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 18));
-        guessTextField.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+        guessTextField.setStyle("-fx-background-color: white; -fx-text-fill: black;");
         guessTextField.setOnAction(e -> checkGuess());
         gridPane.add(guessTextField, 0, 1, 3, 1);
 
         Button revealButton = new Button("What's the Answer?");
         revealButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
-        revealButton.setTextFill(Color.WHITE);
-        revealButton.setStyle("-fx-background-color: blue; -fx-padding: 8px 12px;");
+        revealButton.setTextFill(Color.BLACK);
+        revealButton.setStyle("-fx-background-color: white; -fx-padding: 8px 12px;");
         revealButton.setOnAction(e -> revealAnswer());
         gridPane.add(revealButton, 0, 2, 3, 1);
 
@@ -323,11 +366,11 @@ public class WordleGame extends Application {
     private StackPane createWordleText() {
         Text wordleText = new Text("WORDLE");
         wordleText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 40));
-        wordleText.setFill(Color.RED);
+        wordleText.setFill(Color.GHOSTWHITE);
 
         Text authorText = new Text("By Rob Bundy");
         authorText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 12));
-        authorText.setFill(Color.RED);
+        authorText.setFill(Color.GHOSTWHITE);
         authorText.setTranslateY(10);
 
         StackPane wordlePane = new StackPane(wordleText, authorText);
