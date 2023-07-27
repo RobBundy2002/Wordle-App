@@ -10,7 +10,6 @@ module com.example.wordle {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-
     opens com.example.wordle to javafx.fxml;
     exports com.example.wordle;
 }
